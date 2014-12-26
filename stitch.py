@@ -43,8 +43,8 @@ def correlation(features_1, features_2):
 if __name__ == "__main__":
     # only need to download once:
     # files = source.download_images('yosemite', 100, -119.574650, 37.729424, -119.572650, 37.731424)
-    files = source.get_images('yosemite')
-    features = [feature_detect.get_features(f) for f in files[:20]]
+    files = source.get_images('yosemite')[:20]
+    features = [feature_detect.get_features(f) for f in files]
 
     grid = np.zeros((len(features), len(features)), 'int')
     for i, f1 in enumerate(features):
@@ -52,5 +52,7 @@ if __name__ == "__main__":
         for j, f2 in enumerate(features):
             if i >= j: # do not double compute
                 grid[i, j] = correlation(f1[1], f2[1])
+                if i != j and grid[i, j] > 5:
+                    print(files[i], files[j])
 
     print(grid)
