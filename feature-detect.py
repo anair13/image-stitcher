@@ -12,7 +12,7 @@ def find_features(img, hessian_threshold=500):
     Returns:
     ([keypoints], [descriptors])
     """
-    surf = cv2.SURF(400)
+    surf = cv2.SURF(hessian_threshold)
     kp, des = surf.detectAndCompute(img, None) # Second param is mask
     return (kp, des)
 
