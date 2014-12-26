@@ -3,6 +3,7 @@ import source
 import feature_detect
 import numpy as np
 import numpy.lib.scimath as npmath
+import cv2
 
 def match_oneway(features_1, features_2):
     """One way descriptor matching image f1 to f2, adapted from Solem"""
@@ -54,5 +55,11 @@ if __name__ == "__main__":
                 grid[i, j] = correlation(f1[1], f2[1])
                 if i != j and grid[i, j] > 5:
                     print(files[i], files[j])
+                    cv2.imshow("match1", cv2.imread(files[i]))
+                    cv2.imshow("match2", cv2.imread(files[j]))
+                    cv2.waitKey(0)
+                    cv2.destroyWindow("match1")
+                    cv2.destroyWindow("match2")
+
 
     print(grid)
