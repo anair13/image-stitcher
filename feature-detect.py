@@ -17,7 +17,15 @@ def find_features(img, hessian_threshold=500):
     return (kp, des)
 
 def display_features(img, kp):
-    """Draw features onto image
+    """Display window of image with feature keypoints superimposed
+    The window closes on keypress
+
+    Params:
+    img -- OpenCV image
+    kp -- list of keypoints outputted by surf.detect()
+
+    Returns:
+    None
     """
     kpimg = cv2.drawKeypoints(img, kp)
     cv2.imshow("Feature Keypoints", kpimg)
