@@ -17,14 +17,19 @@ def find_features(img, hessian_threshold=500):
     return (kp, des)
 
 def display_features(img, kp):
-    """Draw features onto image
-    """
+    """Draw features onto image"""
     kpimg = cv2.drawKeypoints(img, kp)
     cv2.imshow("Feature Keypoints", kpimg)
     cv2.waitKey(0)
     cv2.destroyWindow("Feature Keypoints")
 
-img = cv2.imread("test.jpg")
-gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-(kp, _) = find_features(gray)
-display_features(gray, kp)
+def get_features(filename, hessian_threshold=500):
+    img = cv2.imread(filename)
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    return find_features(gray)
+
+if __name__ == "__main__":
+    img = cv2.imread("test.jpg")
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    (kp, _) = get_features("test.jpg")
+    display_features(gray, kp)

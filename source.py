@@ -8,6 +8,7 @@ def download_images(name, n = 20, minx=-77.037564, miny=38.896662, maxx=-77.0355
     """This Panoramio image download code adapted from Jan Erik Solem
     Stores the images to folder img/{name}
     Arguments are longitudes (x) and latitudes (y), default is white house.
+    Returns list of filenames
     """
 
     # query for images
@@ -33,6 +34,13 @@ def download_images(name, n = 20, minx=-77.037564, miny=38.896662, maxx=-77.0355
         image.retrieve(url, dir + os.path.basename(urlparse.urlparse(url).path))
         print 'downloading:', url
 
+    return [dir + file for file in os.listdir(dir)]
+
+def get_images(name):
+    """Returns list of filenames"""
+    dir = "img/" + name + "/"
+    return [dir + file for file in os.listdir(dir)]
+
 if __name__ == "__main__":
     # download_images('washington', 50, minx=-77.037564, miny=38.896662, maxx=-77.035564, maxy=38.898662)
-    download_images('campanile', 50, -122.260434, 37.871816, -122.258434, 37.873816)
+    print(download_images('campanile', 50, -122.260434, 37.871816, -122.258434, 37.873816))
