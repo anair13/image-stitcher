@@ -32,7 +32,8 @@ def display_features(img, kp):
     cv2.waitKey(0)
     cv2.destroyWindow("Feature Keypoints")
 
-img = cv2.imread("test.jpg")
-gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-(kp, _) = find_features(gray)
-display_features(gray, kp)
+if __name__ == "__main__":
+    img = cv2.imread("test.jpg")
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    (kp, _) = find_features(gray)
+    display_features(gray, kp)
