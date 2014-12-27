@@ -29,10 +29,13 @@ def download_images(name, n = 20, minx=-77.037564, miny=38.896662, maxx=-77.0355
         os.makedirs(d)
 
     # download images
+    print("fetching", len(imurls), "images")
     for url in imurls:
         image = urllib.URLopener()
         image.retrieve(url, dir + os.path.basename(urlparse.urlparse(url).path))
-        print 'downloading:', url
+        # print 'downloading:', url
+
+    print("done fetching", len(imurls), "images")
 
     return [dir + file for file in os.listdir(dir)]
 
