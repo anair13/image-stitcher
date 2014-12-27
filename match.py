@@ -1,10 +1,11 @@
-"""Stitches images together"""
+"""Finds matching features and pickles matching information to files"""
 import source
 import detect
 import numpy as np
 import numpy.lib.scimath as npmath
 import pickle
 import cv2
+from disjoint_set import DisjointSet
 
 def match_oneway(features_1, features_2):
     """One way descriptor matching image f1 to f2, adapted from Solem"""
@@ -52,9 +53,11 @@ def show_groups():
             cv2.destroyWindow(f)
 
 if __name__ == "__main__":
+    N = 20
+
     # only need to download once:
-    # source.download_images('yosemite', 200, -119.583650, 37.720424, -119.563650, 37.740424)
-    files = source.get_images('yosemite')[:20]
+    # source.download_images('yosemite', N, -119.583650, 37.720424, -119.563650, 37.740424)
+    files = source.get_images('yosemite')[:N]
     features = [detect.get_features(f) for f in files]
 
     norm_features = []
@@ -65,8 +68,7 @@ if __name__ == "__main__":
     grid = np.zeros((len(features), len(features)), 'int')
     matches = {} # {filename: (filename, correlation)}
 
-    group_map = {} # {filename: group_index}
-    groups = [] # [{filename1, filename2}, {}]
+    groups = DisjointSet(files)
     for i, f1 in enumerate(norm_features):
         print("matching images with image", i)
         for j, f2 in enumerate(norm_features):
@@ -76,22 +78,10 @@ if __name__ == "__main__":
                     print(files[i], files[j])
                     matches.setdefault(files[i], []).append((files[j], grid[i, j]))
                     matches.setdefault(files[j], []).append((files[i], grid[i, j]))
-                    index = None
-                    if files[i] in group_map:
-                        index = group_map[files[i]]
-                    elif files[j] in group_map:
-                        index = group_map[files[j]]
-                    if index:
-                        groups[index].add(files[i])
-                        groups[index].add(files[j])
-                    else:
-                        groups.append(set([files[i], files[j]]))
-                        group_map[files[i]] = len(groups) - 1
-                        group_map[files[j]] = len(groups) - 1
+                    groups.union(files[i], files[j])
 
     pickle.dump(files, open('files.txt', 'w'))
     pickle.dump(matches, open('matches.txt', 'w'))
-    pickle.dump(groups, open('groups.txt', 'w'))
-    pickle.dump(group_map, open('group_map.txt', 'w'))
+    pickle.dump(groups.get_sets(), open('groups.txt', 'w'))
 
     show_groups()
