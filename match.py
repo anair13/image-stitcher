@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # only need to download once:
     # source.download_images('yosemite', N, -119.583650, 37.720424, -119.563650, 37.740424)
     files = source.get_images('yosemite')[:N]
-    features = [detect.get_features(f) for f in files]
+    features = [detect.get_features(f, sx=0.5, sy=0.5) for f in files]
 
     norm_features = []
     for f in features:
