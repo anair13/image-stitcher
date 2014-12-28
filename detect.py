@@ -32,7 +32,21 @@ def display_features(img, kp):
     cv2.waitKey(0)
     cv2.destroyWindow("Feature Keypoints")
 
-def get_features(filename, hessian_threshold=500):
+def get_features(filename, hessian_threshold=500, sx=1, sy=1):
+    """Loads an image from <filename>, performs preprocessing,
+    and calls find_features() on it to retrieve features
+
+    Preprocessing involves converting to grayscale and resizing
+
+    Params:
+    filename -- string indicating relative directory to file
+    hessian_threshold -- threshold for feature selection (default 500)
+    sx -- factor to resize in x (default 1)
+    sy -- factor to resize in y (default 1)
+
+    Returns:
+    ([keypoints], [descriptors])
+    """
     img = cv2.imread(filename)
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     return find_features(gray)
