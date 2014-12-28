@@ -49,7 +49,8 @@ def get_features(filename, hessian_threshold=500, sx=1, sy=1):
     """
     img = cv2.imread(filename)
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    return find_features(gray)
+    resized_img = cv2.resize(gray, None, fx=sx, fy=sy, interpolation=cv2.INTER_NEAREST)
+    return find_features(resized_img)
 
 if __name__ == "__main__":
     img = cv2.imread("test.jpg")
